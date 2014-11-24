@@ -58,7 +58,7 @@
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModel\WeatherViewModel.cs" />
     <Compile Include="API Connect\WeatherRequester.cs" />
-    <Compile Include="API Connect\WeatherUpdate.cs" />
+    <Compile Include="API Connect\WeatherUpdater.cs" />
     <Compile Include="WeatherSerializer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

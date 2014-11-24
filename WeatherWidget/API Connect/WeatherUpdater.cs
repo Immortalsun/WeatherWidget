@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace WeatherWidget
 {
     /// <summary>
     /// Encapsulates weather updates
     /// </summary>
-    public class WeatherUpdate : IDisposable
+    public class WeatherUpdater 
     {
         #region Fields
 
@@ -25,16 +26,19 @@ namespace WeatherWidget
         #endregion
 
         #region Methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="doc"></param>
+        public void ParseWeatherXml(XmlDocument doc)
+        {
 
+        }
         #endregion
 
         #region Events
 
         #endregion
 
-        public void Dispose()
-        {
-            
-        }
     }
 }

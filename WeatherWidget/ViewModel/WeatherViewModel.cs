@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace WeatherWidget.Model
 {
@@ -21,6 +22,8 @@ namespace WeatherWidget.Model
         public double Longitude { get; private set; }//optional
         public string USState { get; private set; }
         public string Country { get; private set; }
+
+        public WeatherUpdater Updater { get; private set; }
 
         public int CurrentTemp
         {
@@ -46,15 +49,17 @@ namespace WeatherWidget.Model
             Longitude = lon;
             USState = state;
             Country = country;
+            Updater = new WeatherUpdater();
         }
 
         #endregion
 
         #region Methods
 
-        public void UpdateWeather()
+        public void UpdateWeather(XmlDocument doc)
         {
-
+            Updater.ParseWeatherXml(doc);
+            CurrentTemp = Updater.CurrentTemp;
         }
 
         #endregion

@@ -10,6 +10,9 @@
 # Ignore Key File
 ApiKey.cs
 
+#Ignore Unit Tests
+/WeatherUnitTests
+
 # User-specific folders
 *.sln.ide/
 
