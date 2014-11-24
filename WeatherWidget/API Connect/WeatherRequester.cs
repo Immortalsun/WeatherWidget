@@ -24,7 +24,6 @@ namespace WeatherWidget
         private const string WeatherSearchURL = "http://api.worldweatheronline.com/free/v2/search.ashx?";
         private TimeSpan updateTime;
 
-        private List<WeatherViewModel> WeatherList;
         private Dictionary<string, WeatherViewModel> WeatherDictionary; 
         private bool _updating;
         #endregion
@@ -37,7 +36,7 @@ namespace WeatherWidget
 
         public WeatherRequester()
         {
-            WeatherList = new List<WeatherViewModel>();
+            WeatherDictionary = new Dictionary<string, WeatherViewModel>();
             updateTime = new TimeSpan(0,0,15,0);
         }
 

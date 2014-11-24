@@ -18,7 +18,7 @@ namespace WeatherWidget
         #endregion
 
         #region Properties
-        public int CurrentTemp { get; set; }
+        public int CurrentTemp { get; private set; }
         #endregion
 
         #region Constructor
@@ -27,12 +27,20 @@ namespace WeatherWidget
 
         #region Methods
         /// <summary>
-        /// 
+        /// Parse downloaded xml data for new weather information
         /// </summary>
         /// <param name="doc"></param>
         public void ParseWeatherXml(XmlDocument doc)
         {
-
+            var nodeCollection = doc.SelectNodes("/data/current_condition");
+            if (nodeCollection != null && nodeCollection.Count > 0)
+            {
+                foreach (XmlNode node in nodeCollection)
+                {
+                    string tempF = node["temp_F"].InnerText;
+                    CurrentTemp = Int32.Parse(tempF);
+                }
+            }
         }
         #endregion
 
