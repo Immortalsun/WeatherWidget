@@ -7,6 +7,9 @@
 *.userosscache
 *.sln.docstates
 
+# Ignore Key File
+ApiKey.cs
+
 # User-specific folders
 *.sln.ide/
 

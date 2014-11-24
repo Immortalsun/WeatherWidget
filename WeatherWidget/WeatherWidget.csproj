@@ -53,7 +53,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="WeatherRequester.cs" />
+    <Compile Include="ApiKey.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="ViewModel\WeatherViewModel.cs" />
+    <Compile Include="API Connect\WeatherRequester.cs" />
+    <Compile Include="API Connect\WeatherUpdate.cs" />
+    <Compile Include="WeatherSerializer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,7 +107,6 @@
   <ItemGroup>
     <Folder Include="Images\" />
     <Folder Include="Model\" />
-    <Folder Include="ViewModel\" />
     <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

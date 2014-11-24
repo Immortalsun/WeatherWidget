@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,23 +8,20 @@ using System.Threading.Tasks;
 namespace WeatherWidget
 {
     /// <summary>
-    /// Class that handles requestin the online weather API for information
+    /// Encapsulates weather updates
     /// </summary>
-    public class WeatherRequester
+    public class WeatherUpdate : IDisposable
     {
-
         #region Fields
-        private const string ApiKey = "dcd9a09528ce089522caf1c9fbb1d";
-        private const string WeatherRequestURL = "http://api.worldweatheronline.com/free/v2/weather.ashx";
-        private const string WeatherSearchURL = "http://api.worldweatheronline.com/free/v2/search.ashx";
+
         #endregion
 
         #region Properties
-
+        public int CurrentTemp { get; set; }
         #endregion
 
         #region Constructor
-
+        
         #endregion
 
         #region Methods
@@ -34,5 +32,9 @@ namespace WeatherWidget
 
         #endregion
 
+        public void Dispose()
+        {
+            
+        }
     }
 }
