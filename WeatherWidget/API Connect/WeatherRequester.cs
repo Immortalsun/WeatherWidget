@@ -29,7 +29,7 @@ namespace WeatherWidget
         #endregion
 
         #region Properties
-
+        public bool UpdateSuccessful { get; set; }
         #endregion
 
         #region Constructor
@@ -83,6 +83,11 @@ namespace WeatherWidget
         {
         }
 
+        /// <summary>
+        /// Adds a view model to the Requester
+        /// Stops updating and restarts updating when addition is complete
+        /// </summary>
+        /// <param name="model">The WeatherViewModel to add</param>
         public void AddViewModel(WeatherViewModel model)
         {
             Stop();
@@ -121,7 +126,7 @@ namespace WeatherWidget
         /// <returns></returns>
         public async Task UpdateWeather()
         {
-
+            UpdateSuccessful = false;
             //if there are any
             if (WeatherDictionary.Any())
             {
@@ -130,12 +135,16 @@ namespace WeatherWidget
                 {
                     //asynchronously request the weather api
                     XmlDocument content = await GetWeatherUpdateFromWebAsyc(kvp.Key);
-                    //pass the xml along to the view model for parsing and updating
-                    var viewModel = kvp.Value;
-                    viewModel.UpdateWeather(content);
+                    if (content != null)
+                    {
+                        //pass the xml along to the view model for parsing and updating
+                        var viewModel = kvp.Value;
+                        viewModel.UpdateWeather(content);
+                        UpdateSuccessful = true;
+                    }
+
                 }
             }
-
         }
 
         /// <summary>
