@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace WeatherWidget.Model
+namespace WeatherWidget.ViewModel
 {
     /// <summary>
     /// Encapsulates properties of weather information such as Location, Latitude, Longitude, and current weather

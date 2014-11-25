@@ -6,11 +6,10 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Xml;
-using WeatherWidget.Model;
+using WeatherWidget.ViewModel;
 
-namespace WeatherWidget
+namespace WeatherWidget.APIConnect
 {
     /// <summary>
     /// Class that handles requestin the online weather API for information
