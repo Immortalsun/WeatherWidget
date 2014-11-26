@@ -81,6 +81,7 @@ namespace WeatherWidget.ViewModel
         public void StartUpdating()
         {
             _updateThread = new Thread(_requester.Start);
+            _updateThread.Name = "WeatherUpdaterThread";
             _updateThread.IsBackground = true;
             _updateThread.Start();
         }
