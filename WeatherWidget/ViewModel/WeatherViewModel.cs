@@ -14,6 +14,7 @@ namespace WeatherWidget.ViewModel
     {
         #region Fields
         private int _currentTemp;
+        private bool _firstLoad=true;
         #endregion
 
         #region Properties
@@ -33,10 +34,26 @@ namespace WeatherWidget.ViewModel
                 if (_currentTemp != value)
                 {
                     _currentTemp = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged("CurrentTempString");
                 }
             }
         }
+
+        public string CurrentTempString
+        {
+            get
+            {
+                if (_firstLoad)
+                {
+                    return "Loading...";
+                }
+                else
+                {
+                    return _currentTemp + " °F";
+                }
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -58,6 +75,7 @@ namespace WeatherWidget.ViewModel
 
         public void UpdateWeather(XmlDocument doc)
         {
+            _firstLoad = false;
             Updater.ParseWeatherXml(doc);
             CurrentTemp = Updater.CurrentTemp;
         }

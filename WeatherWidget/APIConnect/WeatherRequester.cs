@@ -25,7 +25,7 @@ namespace WeatherWidget.APIConnect
         private TimeSpan updateTime;
         private readonly object padlock = new object(); //locking mechanism
         private Dictionary<WeatherViewModel,string> WeatherDictionary; 
-        public static volatile bool Updating;
+        private volatile bool Updating;
         #endregion
 
         #region Properties
@@ -49,6 +49,7 @@ namespace WeatherWidget.APIConnect
         /// </summary>
         public async void Start()
         {
+            Updating = true;
             while (Updating)
             {
                 await UpdateWeather();
@@ -149,10 +150,9 @@ namespace WeatherWidget.APIConnect
                         //pass the xml along to the view model for parsing and updating
                         var viewModel = kvp.Key;
                         viewModel.UpdateWeather(content);
-                        UpdateSuccessful = true;
                     }
-
                 }
+                UpdateSuccessful = true;
             }
         }
 

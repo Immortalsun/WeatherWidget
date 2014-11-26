@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 
 namespace WeatherWidget.ViewModel
@@ -18,6 +20,10 @@ namespace WeatherWidget.ViewModel
         private RelayCommand _addNewWeatherCommand;
         private RelayCommand _showWeatherViewCommand;
 
+        //ok/cancel for add New weather
+        private RelayCommand _okNewWeatherCommand;
+        private RelayCommand _cancelNewWeatherCommand;
+        //show/hide settings
 
         #endregion
 
@@ -41,7 +47,27 @@ namespace WeatherWidget.ViewModel
             get
             {
                 return _showWeatherViewCommand ??
-                       (_showWeatherViewCommand = new RelayCommand(param => ShowWeatherView()));
+                       (_showWeatherViewCommand = new RelayCommand(param => ShowWeatherView(),
+                           param=>CanExecuteShowWeather()));
+            }
+        }
+
+        public RelayCommand OkNewWeatherCommand
+        {
+            get
+            {
+                return _okNewWeatherCommand ?? (_okNewWeatherCommand = 
+                    new RelayCommand(param => OKAddNewWeather(), param=>CanExecuteAddNew()));
+            }
+        }
+
+        public RelayCommand CancelNewWeatherCommand
+        {
+            get
+            {
+                return _cancelNewWeatherCommand ??
+                       (_cancelNewWeatherCommand = new RelayCommand(param => CancelAddNewWeather(),
+                           param=>CanExecuteShowWeather()));
             }
         }
 
@@ -66,28 +92,75 @@ namespace WeatherWidget.ViewModel
         public MainWindowViewModel()
         {
             _viewModels = new ObservableCollection<ViewModelBase>();
-            _newWeatherViewModel = new AddNewWeatherViewModel();
+            _newWeatherViewModel = new AddNewWeatherViewModel(OkNewWeatherCommand, CancelNewWeatherCommand);
+            _weatherCollectionViewModel = new WeatherCollectionViewModel();
             _viewModels.Add(_newWeatherViewModel);
+            _viewModels.Add(_weatherCollectionViewModel);
             SetActiveViewModel(_newWeatherViewModel);
         }
 
+        public MainWindowViewModel(WeatherSettings settings)
+        {
+            _viewModels = new ObservableCollection<ViewModelBase>();
+            _newWeatherViewModel = new AddNewWeatherViewModel(OkNewWeatherCommand, CancelNewWeatherCommand);
+            _weatherCollectionViewModel = new WeatherCollectionViewModel(settings);
+            _viewModels.Add(_newWeatherViewModel);
+            _viewModels.Add(_weatherCollectionViewModel);
+            if (_weatherCollectionViewModel.WeatherItems.Any())
+            {
+                SetActiveViewModel(_weatherCollectionViewModel);
+            }
+            else
+            {
+                SetActiveViewModel(_newWeatherViewModel);
+            }
+
+        }
 
 
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// Switches the current view model to the
+        /// weather collectin view model
+        /// </summary>
         public void ShowWeatherView()
         {
-           
+           SetActiveViewModel(_weatherCollectionViewModel);
+            _weatherCollectionViewModel.StartUpdating();
         }
 
+        public bool CanExecuteShowWeather()
+        {
+            return _weatherCollectionViewModel.WeatherItems.Any();
+        }
+
+        public void OKAddNewWeather()
+        {
+            //TODO: Add validation for city name here
+            var cityName = _newWeatherViewModel.CityName;
+            var newViewModel = new WeatherViewModel(cityName);
+            _weatherCollectionViewModel.AddNewWeatherItem(newViewModel);
+            ShowWeatherView();
+        }
+
+        public bool CanExecuteAddNew()
+        {
+           return !String.IsNullOrEmpty(_newWeatherViewModel.CityName);
+        }
+
+        public void CancelAddNewWeather()
+        {
+            ShowWeatherView();
+        }
 
         /// <summary>
         /// Method to create an add new weather view model
         /// </summary>
         public void AddNewWeather()
         {
+            _weatherCollectionViewModel.StopUpdating();
             SetActiveViewModel(_newWeatherViewModel);
         }
 

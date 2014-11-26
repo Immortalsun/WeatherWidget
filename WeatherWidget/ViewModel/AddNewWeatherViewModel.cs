@@ -10,42 +10,39 @@ namespace WeatherWidget.ViewModel
     {
         #region Fields
 
-        private string _cityNameText;
         private RelayCommand _okCommand;
         private RelayCommand _cancelCommand;
-
+        private MainWindowViewModel _parent;
         #endregion
 
         #region Properties
 
         public RelayCommand OKCommand
         {
-            get { return _okCommand ?? (_okCommand = new RelayCommand(param => OK())); }
+            get { return _okCommand; }
         }
 
         public RelayCommand CancelCommand
         {
-            get { return _cancelCommand ?? (_cancelCommand = new RelayCommand(param => Cancel())); }
+            get { return _cancelCommand; }
         }
+
+        public String CityName { get; set; }
 
         #endregion
 
         #region Constructor
 
+        public AddNewWeatherViewModel(RelayCommand okCommand, RelayCommand cancelCommand)
+        {
+            _okCommand = okCommand;
+            _cancelCommand = cancelCommand;
+        }
+
         #endregion
 
         #region Methods
-
-        public void OK()
-        {
-
-        }
-
-        public void Cancel()
-        {
-
-        }
-
+        
         #endregion
 
         #region Events

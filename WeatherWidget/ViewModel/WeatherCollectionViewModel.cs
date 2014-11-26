@@ -66,7 +66,7 @@ namespace WeatherWidget.ViewModel
 
         #region Methods
         /// <summary>
-        /// 
+        /// Adds a new weather view model to the list
         /// </summary>
         /// <param name="model"></param>
         public void AddNewWeatherItem(WeatherViewModel model)
@@ -81,7 +81,6 @@ namespace WeatherWidget.ViewModel
         public void StartUpdating()
         {
             _updateThread = new Thread(_requester.Start);
-            WeatherRequester.Updating = true;
             _updateThread.IsBackground = true;
             _updateThread.Start();
         }
