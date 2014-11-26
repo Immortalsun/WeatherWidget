@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,9 +23,9 @@ namespace WeatherWidget.APIConnect
         private const string WeatherRequestURL = "http://api.worldweatheronline.com/free/v2/weather.ashx?";
         private const string WeatherSearchURL = "http://api.worldweatheronline.com/free/v2/search.ashx?";
         private TimeSpan updateTime;
-
-        private Dictionary<string, WeatherViewModel> WeatherDictionary; 
-        private bool _updating;
+        private readonly object padlock = new object(); //locking mechanism
+        private Dictionary<WeatherViewModel,string> WeatherDictionary; 
+        public static volatile bool Updating;
         #endregion
 
         #region Properties
@@ -35,7 +36,7 @@ namespace WeatherWidget.APIConnect
 
         public WeatherRequester()
         {
-            WeatherDictionary = new Dictionary<string, WeatherViewModel>();
+            WeatherDictionary = new Dictionary<WeatherViewModel,string>();
             updateTime = new TimeSpan(0,0,15,0);
         }
 
@@ -48,50 +49,59 @@ namespace WeatherWidget.APIConnect
         /// </summary>
         public async void Start()
         {
-            while (_updating)
+            while (Updating)
             {
                 await UpdateWeather();
-                Thread.Sleep(updateTime);
+                if (UpdateSuccessful)
+                {
+                    lock (padlock)
+                    {
+                        Monitor.Wait(padlock, updateTime);
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
         }
 
         /// <summary>
-        /// Stops Weather updates
+        /// Stops weather updates
         /// </summary>
         public void Stop()
         {
-            _updating = false;
-            GC.Collect();
+            Updating = false;
+
+            lock (padlock)
+            {
+                Monitor.Pulse(padlock);
+            }
         }
 
 
-       
         /// <summary>
-        /// Loads a list of weather view model objects
-        /// from a serialized xml file
+        /// Figure out if there is anything
+        /// in the weather dictionary
         /// </summary>
-        public void Load()
+        /// <returns>True if there are any items</returns>
+        public bool Any()
         {
-        }
-
-        /// <summary>
-        /// Saves the list of current weather viwe model objects
-        /// to a serialized xml file
-        /// </summary>
-        public void Save()
-        {
+            return WeatherDictionary.Any();
         }
 
         /// <summary>
         /// Adds a view model to the Requester
-        /// Stops updating and restarts updating when addition is complete
         /// </summary>
         /// <param name="model">The WeatherViewModel to add</param>
-        public void AddViewModel(WeatherViewModel model)
+        private void AddViewModel(WeatherViewModel model)
         {
-            Stop();
-            WeatherDictionary.Add(GenerateRequestString(model.CityName), model);
-            Start();
+            WeatherDictionary.Add(model, GenerateRequestString(model.CityName));
+        }
+
+        private void RemoveViewModel(WeatherViewModel model)
+        {
+            WeatherDictionary.Remove(model);
         }
 
         /// <summary>
@@ -133,11 +143,11 @@ namespace WeatherWidget.APIConnect
                 foreach (var kvp in WeatherDictionary)
                 {
                     //asynchronously request the weather api
-                    XmlDocument content = await GetWeatherUpdateFromWebAsyc(kvp.Key);
+                    XmlDocument content = await GetWeatherUpdateFromWebAsyc(kvp.Value);
                     if (content != null)
                     {
                         //pass the xml along to the view model for parsing and updating
-                        var viewModel = kvp.Value;
+                        var viewModel = kvp.Key;
                         viewModel.UpdateWeather(content);
                         UpdateSuccessful = true;
                     }
@@ -191,7 +201,36 @@ namespace WeatherWidget.APIConnect
         #endregion
 
         #region Events
-
+        /// <summary>
+        /// This event is attached in the WeatherCollectionViewModel
+        /// It automatically updates the requester when new view models are added
+        /// or removed from the WeatherCollectionViewModel's collection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void WeatherItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action.Equals(NotifyCollectionChangedAction.Add))
+            {
+                if (e.NewItems != null && e.NewItems.Count > 0)
+                {
+                    foreach (WeatherViewModel model in e.NewItems)
+                    {
+                        AddViewModel(model);
+                    }
+                }
+            }
+            else if (e.Action.Equals(NotifyCollectionChangedAction.Remove))
+            {
+                if (e.OldItems != null && e.OldItems.Count > 0)
+                {
+                    foreach (WeatherViewModel model in e.OldItems)
+                    {
+                        RemoveViewModel(model);
+                    }
+                }
+            }
+        }
         #endregion
 
     }

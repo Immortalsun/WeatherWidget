@@ -73,6 +73,7 @@
       <DependentUpon>WeatherView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WeatherSerializer.cs" />
+    <Compile Include="WeatherSettings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

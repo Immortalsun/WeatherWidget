@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
+﻿using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace WeatherWidget.ViewModel
 {
@@ -24,6 +17,8 @@ namespace WeatherWidget.ViewModel
         //commands to switch views
         private RelayCommand _addNewWeatherCommand;
         private RelayCommand _showWeatherViewCommand;
+
+
         #endregion
 
         #region Properties
