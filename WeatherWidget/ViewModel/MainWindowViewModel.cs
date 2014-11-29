@@ -133,7 +133,8 @@ namespace WeatherWidget.ViewModel
 
         public bool CanExecuteShowWeather()
         {
-            return _weatherCollectionViewModel.WeatherItems.Any();
+            return (_weatherCollectionViewModel.WeatherItems.Any() 
+                && !CurrentViewModel.Equals(_weatherCollectionViewModel));
         }
 
         public void OKAddNewWeather()

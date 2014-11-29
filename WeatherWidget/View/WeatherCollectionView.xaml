@@ -57,8 +57,7 @@
                                               SharedSizeGroup="WeatherItemColumn"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" 
-                                           SharedSizeGroup="WeatherItemRow"/>
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" 
                                            SharedSizeGroup="ForecastButtonRow"/>
                         </Grid.RowDefinitions>

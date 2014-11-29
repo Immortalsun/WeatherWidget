@@ -11,4 +11,32 @@
         <view:AddNewWeatherView/>
     </DataTemplate>
     
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="LightBlue"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="Border"
+                            BorderThickness="0"
+                            Background="{TemplateBinding Background}"
+                           >
+                        <ContentPresenter
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            ></ContentPresenter>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="CornflowerBlue"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="LightGray"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

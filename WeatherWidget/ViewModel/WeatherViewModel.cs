@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,11 @@ namespace WeatherWidget.ViewModel
     {
         #region Fields
         private int _currentTemp;
-        private bool _firstLoad=true;
+        private string _feelsLikeTemp;
+        private string _currentDesc;
+        private string _windSpeedMph;
+        private string _windDir;
+        private bool _firstLoad = true;
         #endregion
 
         #region Properties
@@ -54,6 +59,36 @@ namespace WeatherWidget.ViewModel
             }
         }
 
+        public string FeelsLikeTemp
+        {
+            get
+            {
+                return _feelsLikeTemp;
+            }
+            set
+            {
+                _feelsLikeTemp = value; OnPropertyChanged();
+            }
+        }
+
+        public string CurrentWeatherDescription
+        {
+            get { return _currentDesc; }
+            set { _currentDesc = value; OnPropertyChanged(); }
+        }
+
+        public string WindSpeedMph
+        {
+            get { return _windSpeedMph; }
+            set { _windSpeedMph = value; OnPropertyChanged(); }
+        }
+
+        public string WindDirection
+        {
+            get { return _windDir; }
+            set { _windDir = value; OnPropertyChanged(); }
+        }
+
         #endregion
 
         #region Constructor
@@ -78,6 +113,10 @@ namespace WeatherWidget.ViewModel
             _firstLoad = false;
             Updater.ParseWeatherXml(doc);
             CurrentTemp = Updater.CurrentTemp;
+            WindDirection = Updater.WindDirection;
+            CurrentWeatherDescription = Updater.CurrentWeatherDescription;
+            WindSpeedMph = Updater.WindSpeedMph;
+            FeelsLikeTemp = Updater.FeelsLikeTemp;
         }
 
         #endregion
