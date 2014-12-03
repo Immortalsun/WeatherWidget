@@ -36,7 +36,7 @@
         
         
         <TextBlock Grid.Row="2" 
-                   Text="{Binding CurrentTempString}" 
+                   Text="{Binding CurrentTemp}" 
                    FontSize="18"
                    HorizontalAlignment="Center"
                    FontWeight="Medium"/>

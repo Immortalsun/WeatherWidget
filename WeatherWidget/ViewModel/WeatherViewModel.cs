@@ -14,12 +14,11 @@ namespace WeatherWidget.ViewModel
     public class WeatherViewModel : ViewModelBase
     {
         #region Fields
-        private int _currentTemp;
+        private string _currentTemp;
         private string _feelsLikeTemp;
         private string _currentDesc;
         private string _windSpeedMph;
         private string _windDir;
-        private bool _firstLoad = true;
         #endregion
 
         #region Properties
@@ -31,31 +30,15 @@ namespace WeatherWidget.ViewModel
 
         public WeatherUpdater Updater { get; private set; }
 
-        public int CurrentTemp
+  
+
+        public string CurrentTemp
         {
             get { return _currentTemp; }
             set
             {
-                if (_currentTemp != value)
-                {
-                    _currentTemp = value;
-                    OnPropertyChanged("CurrentTempString");
-                }
-            }
-        }
-
-        public string CurrentTempString
-        {
-            get
-            {
-                if (_firstLoad)
-                {
-                    return "Loading...";
-                }
-                else
-                {
-                    return _currentTemp + " °F";
-                }
+                _currentTemp = value;
+                OnPropertyChanged();
             }
         }
 
@@ -101,27 +84,27 @@ namespace WeatherWidget.ViewModel
             Longitude = lon;
             USState = state;
             Country = country;
-            Updater = new WeatherUpdater();
+            Updater = new WeatherUpdater(cityName);
+            Updater.WeatherUpdateEvent +=WeatherUpdated;
         }
 
         #endregion
 
         #region Methods
-
-        public void UpdateWeather(XmlDocument doc)
-        {
-            _firstLoad = false;
-            Updater.ParseWeatherXml(doc);
-            CurrentTemp = Updater.CurrentTemp;
-            WindDirection = Updater.WindDirection;
-            CurrentWeatherDescription = Updater.CurrentWeatherDescription;
-            WindSpeedMph = Updater.WindSpeedMph;
-            FeelsLikeTemp = Updater.FeelsLikeTemp;
-        }
+        
 
         #endregion
 
         #region Events
+
+        public void WeatherUpdated(object sender, NotifyWeatherUpdatedEventArgs e)
+        {
+            CurrentTemp = e.CurrentTemp;
+            CurrentWeatherDescription = e.CurrentWeatherDescription;
+            WindSpeedMph = e.WindSpeedMph;
+            WindDirection = e.WindDirection;
+            FeelsLikeTemp = e.FeelsLikeTemp;
+        }
 
         #endregion
     }

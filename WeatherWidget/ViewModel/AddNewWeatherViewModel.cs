@@ -12,7 +12,6 @@ namespace WeatherWidget.ViewModel
 
         private RelayCommand _okCommand;
         private RelayCommand _cancelCommand;
-        private MainWindowViewModel _parent;
         #endregion
 
         #region Properties

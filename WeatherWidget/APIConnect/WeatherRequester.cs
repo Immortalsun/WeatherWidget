@@ -20,11 +20,11 @@ namespace WeatherWidget.APIConnect
 
         #region Fields
 
-        private const string WeatherRequestURL = "http://api.worldweatheronline.com/free/v2/weather.ashx?";
-        private const string WeatherSearchURL = "http://api.worldweatheronline.com/free/v2/search.ashx?";
+        public static string WeatherRequestURL = "http://api.worldweatheronline.com/free/v2/weather.ashx?";
+        public static string WeatherSearchURL = "http://api.worldweatheronline.com/free/v2/search.ashx?";
         private TimeSpan updateTime;
         private readonly object padlock = new object(); //locking mechanism
-        private Dictionary<WeatherViewModel,string> WeatherDictionary; 
+        private List<WeatherUpdater> UpdaterList; 
         private volatile bool Updating;
         #endregion
 
@@ -36,7 +36,7 @@ namespace WeatherWidget.APIConnect
 
         public WeatherRequester()
         {
-            WeatherDictionary = new Dictionary<WeatherViewModel,string>();
+            UpdaterList = new List<WeatherUpdater>();
             updateTime = new TimeSpan(0,0,15,0);
         }
 
@@ -88,45 +88,24 @@ namespace WeatherWidget.APIConnect
         /// <returns>True if there are any items</returns>
         public bool Any()
         {
-            return WeatherDictionary.Any();
+            return UpdaterList.Any();
         }
 
         /// <summary>
         /// Adds a view model to the Requester
         /// </summary>
         /// <param name="model">The WeatherViewModel to add</param>
-        private void AddViewModel(WeatherViewModel model)
+        private void AddUpdater(WeatherUpdater updater)
         {
-            WeatherDictionary.Add(model, GenerateRequestString(model.CityName));
+            UpdaterList.Add(updater);
         }
 
-        private void RemoveViewModel(WeatherViewModel model)
+        private void RemoveUpdater(WeatherUpdater updater)
         {
-            WeatherDictionary.Remove(model);
+            UpdaterList.Remove(updater);
         }
 
-        /// <summary>
-        /// Generates a request call to the api 
-        /// for the specified city name
-        /// </summary>
-        /// <param name="name">Name of city we are requesting</param>
-        /// <returns></returns>
-        public string GenerateRequestString(string name)
-        {
-            name = name.Trim();
-            name = name.Replace(' ', '_');
-
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append(WeatherRequestURL);
-            sb.Append("key=");
-            sb.Append(ApiKey.Key);
-            sb.Append("&q=");
-            sb.Append(name);
-            sb.Append("&format=xml");
-
-            return sb.ToString();
-        }
+     
 
 
 
@@ -138,18 +117,16 @@ namespace WeatherWidget.APIConnect
         {
             UpdateSuccessful = false;
             //if there are any
-            if (WeatherDictionary.Any())
+            if (UpdaterList.Any())
             {
                 //for each url
-                foreach (var kvp in WeatherDictionary)
+                foreach (var updater in UpdaterList)
                 {
                     //asynchronously request the weather api
-                    XmlDocument content = await GetWeatherUpdateFromWebAsyc(kvp.Value);
+                    XmlDocument content = await GetWeatherUpdateFromWebAsyc(updater.QueryString);
                     if (content != null)
                     {
-                        //pass the xml along to the view model for parsing and updating
-                        var viewModel = kvp.Key;
-                        viewModel.UpdateWeather(content);
+                       updater.Update(content);
                     }
                 }
                 UpdateSuccessful = true;
@@ -216,7 +193,7 @@ namespace WeatherWidget.APIConnect
                 {
                     foreach (WeatherViewModel model in e.NewItems)
                     {
-                        AddViewModel(model);
+                        AddUpdater(model.Updater);
                     }
                 }
             }
@@ -226,7 +203,7 @@ namespace WeatherWidget.APIConnect
                 {
                     foreach (WeatherViewModel model in e.OldItems)
                     {
-                        RemoveViewModel(model);
+                        RemoveUpdater(model.Updater);
                     }
                 }
             }
