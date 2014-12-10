@@ -72,7 +72,6 @@ namespace WeatherWidget
             name = name.Trim();
             name = name.Replace(' ', '_');
 
-
             StringBuilder sb = new StringBuilder();
             sb.Append(WeatherRequester.WeatherRequestURL);
             sb.Append("key=");

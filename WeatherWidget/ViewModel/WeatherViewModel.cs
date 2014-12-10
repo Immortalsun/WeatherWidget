@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using WeatherWidget.Model;
 
 namespace WeatherWidget.ViewModel
 {
@@ -23,9 +24,8 @@ namespace WeatherWidget.ViewModel
 
         #region Properties
         public string CityName { get; private set; } //required
-        public double Latitude { get; private set; } //optional
-        public double Longitude { get; private set; }//optional
-        public string USState { get; private set; }
+        public string Latitude { get; private set; } //optional
+        public string Longitude { get; private set; }//optional
         public string Country { get; private set; }
 
         public WeatherUpdater Updater { get; private set; }
@@ -76,15 +76,13 @@ namespace WeatherWidget.ViewModel
 
         #region Constructor
 
-        public WeatherViewModel(string cityName, double lat = 0, double lon = 0, string state = null,
-            string country = null)
+        public WeatherViewModel(Location loc)
         {
-            CityName = cityName;
-            Latitude = lat;
-            Longitude = lon;
-            USState = state;
-            Country = country;
-            Updater = new WeatherUpdater(cityName);
+            CityName = loc.CityName;
+            Latitude = loc.Latitude;
+            Longitude = loc.Longitude;
+            Country = loc.Country;
+            Updater = new WeatherUpdater(CityName);
             Updater.WeatherUpdateEvent +=WeatherUpdated;
         }
 

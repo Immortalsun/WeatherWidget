@@ -139,16 +139,15 @@ namespace WeatherWidget.ViewModel
 
         public void OKAddNewWeather()
         {
-            //TODO: Add validation for city name here
-            var cityName = _newWeatherViewModel.CityName;
-            var newViewModel = new WeatherViewModel(cityName);
+            var location = _newWeatherViewModel.SelectedLocation;
+            var newViewModel = new WeatherViewModel(location);
             _weatherCollectionViewModel.AddNewWeatherItem(newViewModel);
             ShowWeatherView();
         }
 
         public bool CanExecuteAddNew()
         {
-           return !String.IsNullOrEmpty(_newWeatherViewModel.CityName);
+           return (_newWeatherViewModel.SelectedLocation != null);
         }
 
         public void CancelAddNewWeather()

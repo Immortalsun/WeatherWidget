@@ -123,7 +123,7 @@ namespace WeatherWidget.APIConnect
                 foreach (var updater in UpdaterList)
                 {
                     //asynchronously request the weather api
-                    XmlDocument content = await GetWeatherUpdateFromWebAsyc(updater.QueryString);
+                    XmlDocument content = await RequestXmlFromApi(updater.QueryString);
                     if (content != null)
                     {
                        updater.Update(content);
@@ -139,7 +139,7 @@ namespace WeatherWidget.APIConnect
         /// </summary>
         /// <param name="requestUrl">Api Query url</param>
         /// <returns>The xml document containing the web data</returns>
-        private async Task<XmlDocument> GetWeatherUpdateFromWebAsyc(string requestUrl)
+        public static async Task<XmlDocument> RequestXmlFromApi(string requestUrl)
         {
             //Initialize content variable for return
             var content = new XmlDocument();

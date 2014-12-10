@@ -13,7 +13,7 @@
     
     <Style TargetType="Button">
         <Setter Property="Background" Value="LightBlue"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="RoyalBlue"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -28,7 +28,8 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="CornflowerBlue"/>
+                            <Setter Property="Background" Value="RoyalBlue"/>
+                            <Setter Property="Foreground" Value="LightBlue"></Setter>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" Value="LightGray"/>
@@ -38,5 +39,37 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style TargetType="ToggleButton">
+        <Setter Property="Background" Value="LightBlue"/>
+        <Setter Property="Foreground" Value="RoyalBlue"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Name="Border"
+                            BorderThickness="1"
+                            BorderBrush="DeepSkyBlue"
+                            Background="{TemplateBinding Background}"
+                           >
+                        <ContentPresenter
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            ></ContentPresenter>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="CornflowerBlue"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="LightGray"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="DodgerBlue"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
