@@ -20,5 +20,6 @@ namespace WeatherWidget
         public string CurrentWeatherDescription { get; set; }
         public string WindSpeedMph { get; set; }
         public string WindDirection { get; set; }
+        public string ImagePath { get; set; }
     }
 }

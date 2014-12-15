@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -20,6 +21,7 @@ namespace WeatherWidget.ViewModel
         private string _currentDesc;
         private string _windSpeedMph;
         private string _windDir;
+        private string _imagePath;
         #endregion
 
         #region Properties
@@ -72,6 +74,12 @@ namespace WeatherWidget.ViewModel
             set { _windDir = value; OnPropertyChanged(); }
         }
 
+        public string ImagePath
+        {
+            get { return _imagePath; }
+            set { _imagePath = value; OnPropertyChanged(); }
+        }
+
         #endregion
 
         #region Constructor
@@ -102,6 +110,7 @@ namespace WeatherWidget.ViewModel
             WindSpeedMph = e.WindSpeedMph;
             WindDirection = e.WindDirection;
             FeelsLikeTemp = e.FeelsLikeTemp;
+            ImagePath = e.ImagePath;
         }
 
         #endregion

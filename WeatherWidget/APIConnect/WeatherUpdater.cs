@@ -56,6 +56,7 @@ namespace WeatherWidget
                     updaterArgs.WindSpeedMph = windspeed + " MPH";
                     updaterArgs.WindDirection = windDirectionDegree + "° " + windDirectionCompass;
                     updaterArgs.FeelsLikeTemp = "Feels Like " + node["FeelsLikeF"].InnerText + " °F";
+                    updaterArgs.ImagePath = node["weatherIconUrl"].InnerText;
                 }
                 WeatherUpdateEvent.Invoke(this, updaterArgs);
             }

@@ -35,14 +35,14 @@
                    Text="{Binding CurrentWeatherDescription}"
                    HorizontalAlignment="Center"
                    FontSize="16"/>
-
-
-
             <TextBlock Grid.Row="2" 
                    Text="{Binding CurrentTemp}" 
                    FontSize="18"
                    HorizontalAlignment="Center"
                    FontWeight="Medium"/>
+            <Viewbox Grid.Row="3" MaxHeight="32" MaxWidth="32">
+                <Image Source="{Binding ImagePath}"/>
+            </Viewbox>
 
             <TextBlock Grid.Row="4"
                    Text="{Binding FeelsLikeTemp}"
