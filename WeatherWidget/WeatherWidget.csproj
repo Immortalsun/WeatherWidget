@@ -134,8 +134,41 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Resource Include="Images\Blizzard.png" />
+    <Resource Include="Images\BlowingRain.png" />
+    <Resource Include="Images\ClearAM.png" />
+    <Resource Include="Images\ClearPM.png" />
+    <Resource Include="Images\Cloudy.png" />
+    <Resource Include="Images\Dust.png" />
+    <Resource Include="Images\Fog.png" />
+    <Resource Include="Images\Hail.png" />
+    <Resource Include="Images\Haze.png" />
+    <Resource Include="Images\HeavyRain.png" />
+    <Resource Include="Images\HeavySleet.png" />
+    <Resource Include="Images\HeavySnow.png" />
+    <Resource Include="Images\HeavyThunderstorms.png" />
+    <Resource Include="Images\LightCloudsAM.png" />
+    <Resource Include="Images\LightRain.png" />
+    <Resource Include="Images\LightRainPM.png" />
+    <Resource Include="Images\LightSnow.png" />
+    <Resource Include="Images\LightSnowPM.png" />
+    <Resource Include="Images\MostlyCloudyAM.png" />
+    <Resource Include="Images\na.png" />
+    <Resource Include="Images\PartlyCloudy.png" />
+    <Resource Include="Images\PartlyCloudyAM.png" />
+    <Resource Include="Images\PartlyCloudyPM.png" />
+    <Resource Include="Images\PartlyStormyAM.png" />
+    <Resource Include="Images\Rain.png" />
+    <Resource Include="Images\Sleet.png" />
+    <Resource Include="Images\Smoke.png" />
+    <Resource Include="Images\Snow.png" />
+    <Resource Include="Images\Thunderstorms.png" />
+    <Resource Include="Images\VeryCold.png" />
+    <Resource Include="Images\VeryHot.png" />
+    <Resource Include="Images\VeryWindy.png" />
+    <Resource Include="Images\Windy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
